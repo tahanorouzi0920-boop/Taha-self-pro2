@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taha Self Pro - پنل مدیریت</title>
+<style>
+  body { font-family: Tahoma, sans-serif; background: #f4f6fa; margin: 0; padding: 24px; color: #222; }
+  .cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .card { background: #fff; border-radius: 10px; padding: 16px 20px; min-width: 150px; box-shadow: 0 1px 3px #0001; }
+  .card b { display: block; font-size: 22px; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #eee; text-align: right; font-size: 14px; }
+  th { background: #eef1f7; }
+  input { padding: 8px; width: 280px; }
+  button { padding: 8px 14px; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>TAHA SELF PRO - پنل مدیریت</h1>
+<p>توکن پنل را وارد کن (فقط در همین صفحه نگه داشته می‌شود):</p>
+<input id="token" type="password" placeholder="PANEL_TOKEN">
+<button onclick="load()">ورود</button>
+<div id="app" style="margin-top:20px"></div>
+<script>
+const API = 'https://REPLACE_WITH_WORKER_URL';
+async function api(path) {
+  const t = document.getElementById('token').value;
+  const r = await fetch(API + path, { headers: { authorization: 'Bearer ' + t } });
+  if (!r.ok) throw new Error('دسترسی ناموفق');
+  return r.json();
+}
+async function load() {
+  try {
+    const s = await api('/api/stats');
+    const users = await api('/api/users');
+    document.getElementById('app').innerHTML = `
+      <div class="cards">
+        <div class="card">کاربران<b>${s.users}</b></div>
+        <div class="card">مسدود<b>${s.blocked}</b></div>
+        <div class="card">بازی‌های تکمیل‌شده<b>${s.finished_games}</b></div>
+        <div class="card">کل امتیازها<b>${s.total_points}</b></div>
+      </div>
+      <table><tr><th>شناسه</th><th>نام</th><th>امتیاز</th><th>برد</th><th>باخت</th><th>وضعیت</th></tr>
+      ${users.map(u => `<tr><td>${u.id}</td><td>${u.first_name}</td><td>${u.points}</td><td>${u.wins}</td><td>${u.losses}</td><td>${u.status}</td></tr>`).join('')}
+      </table>`;
+  } catch (e) { alert(e.message); }
+}
+</script>
+</body>
+</html>
