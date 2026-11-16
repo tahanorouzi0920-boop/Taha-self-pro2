@@ -3,9 +3,9 @@ main = "src/index.js"
 compatibility_date = "2024-09-01"
 
 [vars]
-ADMIN_TELEGRAM_ID = "0"   # شناسه عددی تلگرام خودت را اینجا بگذار
+ADMIN_TELEGRAM_ID = "7841540275"   # شناسه عددی تلگرام خودت را اینجا بگذار
 
 [[d1_databases]]
 binding = "DB"
 database_name = "taha-self-pro-db"
-database_id = "REPLACE_WITH_D1_ID"
+database_id = "00000000-0000000c-00005125-a23f40a1c2d0eadec7daaeb2dc186e67"
